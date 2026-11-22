@@ -16,7 +16,7 @@ All entries are dated 2026-11-22.
 | 8 | Continuous integration runs on Linux and Windows; the default branch requires a pull request and green checks. | `.github/workflows/ci.yml`; branch protection is set on GitHub after the merge |
 | 9 | Permission rules: documented commands are allowed; force pushes, pushes to the default branch, merges, releases and reads of secrets are denied; edits to CI, agent configuration and Loop files ask first. | `.claude/settings.json` |
 | 10 | Open decisions on tickets are settled with the ticket's stated default (list below). | Epic #1 "Owner decisions" and each ticket |
-| 11 | Rust (where present) is verified in CI only. Not applicable: this repository has no Rust; the native Box2D reference step is likewise verified in CI only. | `CLAUDE.md`; the CI step arrives with ticket B2-08 |
+| 11 | Rust (where present) is verified in CI only. Not applicable: this repository has no Rust; the native Box2D reference step is likewise verified in CI only. | `CLAUDE.md`; `.github/workflows/reference.yml` (installed with the kit, guarded on `reference/CMakeLists.txt`; no ticket edits CI) |
 | 12 | The ten UI rules in `docs/ui-quality.md` are binding; the `ui-ux-pro-max` and `unslop` skills are installed and used for UI work and copy. | `docs/ui-quality.md`, `.claude/skills/ui-ux-pro-max/`, `.claude/skills/unslop/` |
 
 ## Entry 10: decisions settled with the ticket default
@@ -29,7 +29,7 @@ Issue numbers: B2-07 and B2-08 are new tickets whose numbers GitHub assigns on c
 - D4 (#2): test runner is `node:test` and `node:assert` on the compiled output; no test package.
 - D5 (#2, #6): no browser automation package; view logic is a DOM-free view model tested in Node; the Chrome walkthrough is documented and listed under "Owner checks".
 - D6 (#2): default port 8281; `--port 0` picks a free port and prints the URL; binds `127.0.0.1` only.
-- D7 (B2-08, new): native harness in C against Box2D v3.1.1 sources fetched by commit in CI (not vendored), built with CMake on `ubuntu-latest`; reference traces are generated in CI and committed through the ticket's pull request; no native build on the owner's PC. The ticket adds one workflow file, so the implementing session asks the owner before editing CI and records the answer in the pull request.
+- D7 (B2-08, new): native harness in C against Box2D v3.1.1 sources fetched by commit in CI (not vendored), built with CMake on `ubuntu-latest`; reference traces are generated in CI and committed through the ticket's pull request; no native build on the owner's PC. The workflow `.github/workflows/reference.yml` is installed with the kit and skips itself until `reference/CMakeLists.txt` exists; the ticket adds the harness and `reference/generate.sh`, and no ticket edits CI.
 - D8 (#3, B2-02): tolerances are 0.02 m position, 0.05 rad wrapped angle, sensor events exact with at most one outer tick of drift, frozen in `fixtures/tolerances.json`; changing one after the freeze needs a comment on the epic.
 - D9 (#7, B2-06): held-out set is six original scenes from a seeded generator (seed 20261122), committed before any reference trace for them exists and never used to tune slop or tolerances.
 - D10 (#2, B2-07): trace and scene files are JSON, UTF-8, fixed key order from `docs/scene-format.md`, numbers as the shortest round-trip text of the Float32 value, bodies by ascending ID, no `-0`; the canonical hash is SHA-256 of the exact bytes.

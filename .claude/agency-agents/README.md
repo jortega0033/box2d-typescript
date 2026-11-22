@@ -55,7 +55,7 @@ From the repository root, in a new session:
 claude -p "List the project-level subagents defined in .claude/agents with the tools each one may use."
 ```
 
-The six reviewer roles and `loop-verifier` must report exactly `Read, Grep, Glob`. This check was not run when the roles were installed (see the loading note at the end of this file).
+The six reviewer roles and `loop-verifier` must report exactly `Read, Grep, Glob`. The check was run once on 2026-11-22; see "Load check of the project agents and skills" at the end of this file.
 
 ## Updating
 
@@ -72,8 +72,6 @@ The steps at which each role runs are in `.claude/skills/implement-ticket/SKILL.
 A section headed "In this repository" was then inserted directly after the frontmatter of every Agency Agents role (not into `loop-verifier`), before the upstream text. It is project-specific text written for this repository, not upstream text. Because the repository has no application code yet, each section describes the planned stack, modules and commands from the technical specification and says they are planned. Each section ends with the sentence "This section and CLAUDE.md override the generic text below wherever they differ." The upstream text below it and the rest of the frontmatter are unchanged.
 
 To compare a role with the pinned upstream file, remove the "Use proactively" sentence (and the full stop added in front of it where the upstream description has none), the section "In this repository" together with the blank line after it, and the `tools:` line where one was added. Re-check the sections against the code once it exists.
-
-Loading check: not run in this pass. Claude Code loading of the roles (names, `Read, Grep, Glob` for the six reviewer roles and `loop-verifier`) has not been verified; run the command in "Check that the roles load" in a new session before relying on it.
 
 ## SDLC kit changes (2026-11-22)
 
