@@ -1,7 +1,7 @@
 name: reference
 
 # Native Box2D reference traces. Linux only; nothing here runs on the owner's PC.
-# GUARD: the harness does not exist yet. Every step below is skipped until
+# GUARD: the harness does not exist yet. Every step after checkout is skipped until
 # `reference/CMakeLists.txt` exists. Ticket B2-08 adds it, and the steps then run
 # by themselves. No ticket edits this file; only the owner may later change it.
 #
@@ -39,7 +39,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
         with:
