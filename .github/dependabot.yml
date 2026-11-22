@@ -1,0 +1,14 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+  # The technical specification plans exactly one npm package, the pinned
+  # TypeScript compiler. Ticket #2 (B2-01) adds package.json. Until it
+  # merges, Dependabot reports a missing-manifest error for this entry; that
+  # is expected and goes away by itself.
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly

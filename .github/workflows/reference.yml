@@ -1,0 +1,85 @@
+name: reference
+
+# Native Box2D reference traces. Linux only; nothing here runs on the owner's PC.
+# GUARD: the harness does not exist yet. Every step after checkout is skipped until
+# `reference/CMakeLists.txt` exists. Ticket B2-08 adds it, and the steps then run
+# by themselves. No ticket edits this file; only the owner may later change it.
+#
+# Contract for the harness added by B2-08:
+#   reference/CMakeLists.txt        builds the harness; Box2D comes from BOX2D_SOURCE_DIR
+#   reference/generate.sh <build-dir> <out-dir>
+#                                   converts every scene marked `reference: true` in
+#                                   fixtures/scenes/manifest.json with
+#                                   scripts/scene-to-native.mjs, runs the harness and
+#                                   writes the reference traces into <out-dir>
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'reference/**'
+      - 'scripts/scene-to-native.mjs'
+      - 'fixtures/scenes/**'
+      - '.github/workflows/reference.yml'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: reference-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  BOX2D_REPOSITORY: https://github.com/erincatto/box2d.git
+  BOX2D_COMMIT: 8c661469c9507d3ad6fbd2fea3f1aa71669c2fe3
+
+jobs:
+  traces:
+    name: native traces (ubuntu-latest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        with:
+          node-version: '22'
+      - name: Fetch Box2D at the pinned commit
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        run: |
+          git init "$RUNNER_TEMP/box2d"
+          git -C "$RUNNER_TEMP/box2d" fetch --depth 1 "$BOX2D_REPOSITORY" "$BOX2D_COMMIT"
+          git -C "$RUNNER_TEMP/box2d" checkout --detach FETCH_HEAD
+          actual="$(git -C "$RUNNER_TEMP/box2d" rev-parse HEAD)"
+          echo "Box2D commit: $actual"
+          test "$actual" = "$BOX2D_COMMIT"
+      - name: Record toolchain
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        run: |
+          echo "runner image: ${ImageOS:-unknown} ${ImageVersion:-unknown}"
+          cmake --version | head -n 1
+          cc --version | head -n 1
+      - name: Build the harness (first build)
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        run: |
+          cmake -S reference -B "$RUNNER_TEMP/build-a" -DCMAKE_BUILD_TYPE=Release -DBOX2D_SOURCE_DIR="$RUNNER_TEMP/box2d"
+          cmake --build "$RUNNER_TEMP/build-a"
+      - name: Build the harness (second build)
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        run: |
+          cmake -S reference -B "$RUNNER_TEMP/build-b" -DCMAKE_BUILD_TYPE=Release -DBOX2D_SOURCE_DIR="$RUNNER_TEMP/box2d"
+          cmake --build "$RUNNER_TEMP/build-b"
+      - name: Generate traces from both builds and compare
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        run: |
+          sh reference/generate.sh "$RUNNER_TEMP/build-a" "$RUNNER_TEMP/traces-a"
+          sh reference/generate.sh "$RUNNER_TEMP/build-b" "$RUNNER_TEMP/traces-b"
+          diff -r "$RUNNER_TEMP/traces-a" "$RUNNER_TEMP/traces-b"
+          mkdir -p reference-traces
+          cp -r "$RUNNER_TEMP/traces-a/." reference-traces/
+          (cd reference-traces && find . -type f | sort | xargs sha256sum)
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ hashFiles('reference/CMakeLists.txt') != '' }}
+        with:
+          name: reference-traces
+          path: reference-traces
+          if-no-files-found: error
