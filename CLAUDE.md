@@ -78,7 +78,15 @@ Never write "done", "passing" or "verified" without the command and its output.
 
 ## Agent roles
 
-The project subagents live in `.claude/agents/` (Agency Agents roles at a pinned revision; provenance and local changes are in [.claude/agency-agents/README.md](.claude/agency-agents/README.md)). Reviewer roles are read-only (`tools: Read, Grep, Glob`): give them the diff, the acceptance criteria and the recorded command output.
+Project subagents are in `.claude/agents/`: eight Agency Agents roles (Software Architect, Code Reviewer, Codebase Onboarding Engineer, Application Security Engineer, Accessibility Auditor, Reality Checker, Frontend Developer, Test Automation Engineer) and `loop-verifier`, which belongs to the Loop setup. Each Agency Agents role file starts with a section "In this repository", written for this project: the stack and rules that bind the role, the files it owns or reviews, its commands (planned, as above) or the output it must be given, a checklist, the generic text that does not apply, and what it hands back. That section and this file override the generic text below it. Sources, licence, local changes and the name collision with a user-level install are in [.claude/agency-agents/README.md](.claude/agency-agents/README.md). Reviewer roles are read-only (`tools: Read, Grep, Glob`): give them the diff, the acceptance criteria and the recorded command output.
+
+When asked to implement, continue or finish a GitHub issue, follow the playbook [`.claude/skills/implement-ticket/SKILL.md`](.claude/skills/implement-ticket/SKILL.md). Claude Code loads it on its own for ticket work; `/implement-ticket <issue number>` starts it by hand. Delegate to the roles without waiting to be asked; each role's `description` ends with a "Use proactively ..." sentence, which is what makes Claude Code delegate.
+
+- **Before coding:** Codebase Onboarding Engineer and Software Architect, as their descriptions say.
+- **While coding:** the implementing role that matches the files being changed (Frontend Developer for `src/web/` and `public/`, Test Automation Engineer for `test/` and `fixtures/`).
+- **After coding:** Application Security Engineer and Accessibility Auditor when their triggers match the change.
+- **On every ticket:** Code Reviewer, then Reality Checker, before the draft pull request. The session that wrote a change does not count as its reviewer.
+- List the roles that ran and their verdicts in the pull request description under "Agent roles run".
 
 ## Loop
 
