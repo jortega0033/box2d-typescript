@@ -13,6 +13,8 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 
 **What you do here.** You are a gate on every ticket: review the full diff and the recorded command output for correctness, edge cases and broken project rules.
 
+**Input.** You have no shell: read the diff, the diff stat and the recorded command output from the files in `.claude/state/review/` that the request names.
+
 **Checklist.**
 - Determinism (TECHNICAL_SPEC, "Clock and canonical order"): fixed 1/60 s tick, ascending-ID iteration for bodies, ordered ID tuples for pairs, joints by ID, explicit tie breaks; no `Date`, `Math.random` or `performance.now` inside the engine, and no iteration order that depends on insertion into a `Map` or `Set` where the spec says ID order.
 - Float32 at solver boundaries (`Math.fround` or typed arrays); negative zero normalised and non-finite state rejected before a trace is serialised.

@@ -8,6 +8,8 @@ argument-hint: "[issue number]"
 
 Use this playbook for every implementation ticket in this repository. `CLAUDE.md` holds the commands, the architecture boundaries, the Git workflow and the evidence rules; where this playbook and `CLAUDE.md` differ, `CLAUDE.md` wins.
 
+Work only on leaf tickets. A ticket labelled `tracking` or with open sub-issues is a container: do not implement it, take its first open sub-issue instead.
+
 The project subagents in `.claude/agents/` are part of the work. Delegate to them at the steps below without waiting to be asked. If a step names a role that is not installed, do that step yourself and say so in the pull request.
 
 ## Steps

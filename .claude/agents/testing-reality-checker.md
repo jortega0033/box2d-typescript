@@ -13,6 +13,8 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 
 **What you do here.** You are the acceptance gate on every ticket, after Code Reviewer and before the draft pull request. Compare each acceptance criterion of the ticket with evidence that was actually produced. Fixture numbers are targets, not proof.
 
+**Input.** You have no shell: read the diff and the recorded command output from the files in `.claude/state/review/` that the request names.
+
 **Checklist.**
 - Each criterion maps to a test, fixture or recorded manual step whose output is shown, not described.
 - The documented checks were run locally and passed: `npm test` and the ticket's verification commands (planned; introduced by the tickets named in CLAUDE.md). A command the ticket claims that does not exist is a failure.
