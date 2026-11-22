@@ -29,6 +29,6 @@ Scene JSON, then `src/trace/` and `src/engine/` validation, then fixed-tick step
 
 The delivery plan differs from `docs/PRD.md` and `docs/TECHNICAL_SPEC.md` in these ways. The PRD and the specification are not edited; ticket B2-06 reconciles the PRD estimate line and the README status when the epic closes.
 
-- **Estimate and ticket count.** The PRD estimates 13-19 engineering hours over six tickets. The plan estimates 25-36 hours over eight: B2-07 (scene contract, caps and diagnostics) and B2-08 (native reference harness) were added to cover specification items no original ticket owned, and the skeleton ticket now includes the toolchain and the local server.
+- **Estimate and ticket count.** The PRD estimates 13-19 engineering hours over six tickets. The plan estimates 26-37 hours over eight: B2-07 (scene contract, caps and diagnostics) and B2-08 (native reference harness) were added to cover specification items no original ticket owned, and the skeleton ticket now includes the toolchain and the local server.
 - **Where reference traces are generated.** The specification says traces are generated "on an authorized local host". The plan generates them in CI on `ubuntu-latest` (`.github/workflows/reference.yml`), because no C compiler is installed on the owner's PC. The traces are committed, so the comparison itself runs offline.
 - **Commands.** Verification commands in the tickets assume a POSIX shell (Git Bash) or PowerShell 7. Windows PowerShell 5.1 does not run `&&` or the `curl -w` forms as written.
