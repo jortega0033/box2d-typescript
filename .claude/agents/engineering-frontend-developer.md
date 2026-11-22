@@ -17,6 +17,7 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 - The renderer has no authority over simulation time: it asks the engine or a stored trace for a tick and draws it. Replay from a stored trace never calls the engine live.
 - Keyboard-operable controls with visible focus, a text status for tick, selected body, events and comparison, and an invalid import that leaves the last valid scene intact.
 - Imported text is shown with `textContent`, never `innerHTML`.
+- `docs/ui-quality.md` applies to every changed screen: start UI work with the `ui-ux-pro-max` skill (design-system search for the product type) and check the changed screens against the ten rules before handing back.
 
 **Commands (planned, see CLAUDE.md).** `npm ci`, `npm run build`, `npm test`, `npm start`. A browser check is manual: record the browser and version, the controls used by keyboard, and a console and network log free of errors and external requests.
 

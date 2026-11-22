@@ -20,6 +20,7 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 - Module boundaries (docs/architecture.md): the engine imports only `src/trace/` and uses no DOM or Node API; `src/compare/` never imports the engine; only the CLI and the server use Node APIs.
 - No dependency beyond the pinned compiler, no bundler, no external request, no copied Box2D code without its notice.
 - Tests exist for each acceptance criterion and no test or tolerance was loosened to pass.
+- Changed UI and user-facing copy follow `docs/ui-quality.md` (no one-sided accent border, no soft tinted background with a thin border as a status marker, no gradient text, glass or emoji icons, plain copy). Report each breach with file and line.
 
 **Commands.** `Read, Grep, Glob` only. The caller must provide `git diff origin/main...HEAD` and the output of `npm test` and the ticket's own checks (planned commands, see CLAUDE.md).
 

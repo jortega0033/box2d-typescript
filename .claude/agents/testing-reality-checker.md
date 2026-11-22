@@ -20,7 +20,8 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 - Determinism has output: canonical trace bytes equal across two runs on one runtime; Node versus browser differences are reported separately.
 - Reference evidence comes from native-harness traces, never from the engine itself; a divergence is reported, not tuned away.
 - A criterion that needs a person (a browser keyboard walkthrough) is marked manual in the ticket and listed under "Owner checks"; otherwise it fails.
-- CI is configured to run the documented checks; you do not require a CI result. Green CI is checked by the driver before the pull request is marked ready.
+- CI is configured to run the documented checks (`.github/workflows/ci.yml`); you do not require a CI result. Green CI is checked by the driver before the pull request is marked ready.
+- For a ticket that changes UI, the evidence includes a check of the changed screens against `docs/ui-quality.md`.
 
 **Commands.** `Read, Grep, Glob` only. The caller must provide the ticket, the diff and all recorded command output.
 

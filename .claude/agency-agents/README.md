@@ -74,3 +74,17 @@ A section headed "In this repository" was then inserted directly after the front
 To compare a role with the pinned upstream file, remove the "Use proactively" sentence (and the full stop added in front of it where the upstream description has none), the section "In this repository" together with the blank line after it, and the `tools:` line where one was added. Re-check the sections against the code once it exists.
 
 Loading check: not run in this pass. Claude Code loading of the roles (names, `Read, Grep, Glob` for the six reviewer roles and `loop-verifier`) has not been verified; run the command in "Check that the roles load" in a new session before relying on it.
+
+## SDLC kit changes (2026-11-22)
+
+- Code Reviewer, Frontend Developer, Accessibility Auditor and Reality Checker now name `docs/ui-quality.md` in their "In this repository" checklists; Reality Checker also names `.github/workflows/ci.yml` and says green CI is checked by the driver, not by the role.
+- The review gate hook `.claude/hooks/role-gate.mjs` lists the gate roles `Code Reviewer` and `Reality Checker` (exact `name:` values above). Both are installed with `tools: Read, Grep, Glob`.
+- The `implement-ticket` playbook and the new `next-ticket` driver follow the gate, pull request and CI order in `CLAUDE.md`. `ui-ux-pro-max` and `unslop` are installed under `.claude/skills/` with their own `PROVENANCE.md`.
+
+### Load check of the project agents and skills (2026-11-22)
+
+Run once from the worktree root: `claude -p "List every project subagent in .claude/agents with its name and tools, say whether each starts with a section titled In this repository, and list the project skills." --model haiku` (Claude Code 2.1.323). Observed result:
+
+- Nine project subagents listed. Software Architect, Code Reviewer, Codebase Onboarding Engineer, Application Security Engineer, Accessibility Auditor, Reality Checker and `loop-verifier` show `Read, Grep, Glob`; Frontend Developer and Test Automation Engineer show no `tools:` line. The eight Agency Agents roles each start with "In this repository"; `loop-verifier` does not.
+- Eight project skills listed: implement-ticket, next-ticket, ui-ux-pro-max, unslop, issue-triage, loop-budget, loop-constraints, loop-intake.
+- The run also printed that this workspace is not trusted yet, so `permissions.allow` was ignored in that headless run (trust is a per-machine step for the owner), and five lines saying `Write(**/.claude/...)` ask rules are not matched by file permission checks, only `Edit(...)` rules are. The kit `settings.node.json` carries those `Write` lines unchanged; the matching `Edit` rules are present and cover file-editing tools.

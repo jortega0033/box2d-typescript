@@ -20,6 +20,7 @@ This repository is a planning-only project: a deterministic 2D rigid-body engine
 - An invalid import shows an error in text and leaves the last valid scene and the focus where they were.
 - The canvas has a text equivalent; colour is not the only signal for contact, sensor or error states.
 - No flashing; the speed control does not trap focus.
+- The changed screens follow `docs/ui-quality.md` (for example contact, sensor and error status is never a tinted box with a thin border or a one-sided accent border; status text and icons carry the signal).
 
 **Commands.** `Read, Grep, Glob` only. The caller provides the markup, the diff and any manual walkthrough notes; a browser run is manual in this project.
 

@@ -72,9 +72,20 @@ Capture, in the pull request description, each command you ran and its observed 
 2. Each acceptance criterion mapped to the test, fixture or manual step that proves it. A criterion that needs a person (a keyboard walkthrough in a normal browser) is done as far as an agent can and the rest is listed under "Owner checks"; say which.
 3. Determinism and offline checks the ticket touches: canonical trace bytes equal across two runs on the same runtime, no external request from the demo.
 4. A statement of what was not run or not verified, including any native (Box2D) step that only CI can run.
-5. Review gates, in this order: local checks pass; Code Reviewer reviews the full diff and the recorded output; Reality Checker compares each criterion with the evidence; only then open the draft pull request. CI runs on the draft; fix and re-run on a red result. Mark it ready only when CI is green. CI is installed outside the tickets; until ticket #2 makes `npm test` real, CI carries a guard for the missing test command, and #2 removes the guard.
+5. Review gates, in this order: local checks pass with output recorded; the reviewer inputs are written to `.claude/state/review/`; Code Reviewer reviews the full diff and the recorded output; Reality Checker compares each criterion with the evidence (it does not need a CI result); only then `gh pr create --draft`. CI runs on the draft; fix, re-run the checks and both gates on a red result. Mark it ready only when CI is green, and comment the CI run link on the issue. CI is installed outside the tickets; until ticket #2 adds `package.json`, a guard skips the `npm` steps, and no ticket edits CI.
 
 Never write "done", "passing" or "verified" without the command and its output.
+
+## Delivery workflow
+
+- **Start:** only the owner starts ticket work, with `/next-ticket [issue]` ([`.claude/skills/next-ticket/SKILL.md`](.claude/skills/next-ticket/SKILL.md)). There is no scheduler. Playbook: [`.claude/skills/implement-ticket/SKILL.md`](.claude/skills/implement-ticket/SKILL.md).
+- **Review gate hook:** [`.claude/hooks/role-gate.mjs`](.claude/hooks/role-gate.mjs) blocks `gh pr create` and `gh pr ready` until Code Reviewer and Reality Checker ran after the last code edit. `ROLE_GATE=off` in the environment Claude Code is started from switches it off for that session; only the owner does that.
+- **Permissions:** [`.claude/settings.json`](.claude/settings.json). Documented commands are allowed; force pushes, pushes to `main`, merges, releases and reads of secrets are denied; edits to CI, agent configuration and Loop files ask first.
+- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on Linux and Windows (Node 22) and must be green before a pull request is marked ready. Until ticket #2 adds `package.json`, a guard skips `npm ci` and `npm test`; the guard becomes inactive on its own at that point, and only the owner may later delete the `if:` lines. No ticket changes `.github/`; the native reference step (B2-08) needs the owner's approval first.
+- **Pull requests and tickets:** [pull request template](.github/pull_request_template.md), [ticket template](.github/ISSUE_TEMPLATE/implementation-ticket.md). Labels: `status:ready`, `status:blocked`, `status:in-progress`, `needs-decision`, `tracking`. Big tickets are split into sub-issues of 1 to 4 hours; `/next-ticket` picks leaf tickets only. Add a line to [CHANGELOG.md](CHANGELOG.md) in every ticket pull request.
+- **Only the owner merges and releases** ([docs/RELEASING.md](docs/RELEASING.md)). Security reports: [SECURITY.md](SECURITY.md).
+- **UI and writing quality:** [docs/ui-quality.md](docs/ui-quality.md) is binding for every screen; skills `ui-ux-pro-max` (UI work) and `unslop` (copy, docs, pull request text) are installed in `.claude/skills/`.
+- **Owner decisions** are recorded in [docs/owner-decisions.md](docs/owner-decisions.md). An agent that finds one blocking a ticket stops and says so.
 
 ## Agent roles
 
@@ -90,4 +101,4 @@ When asked to implement, continue or finish a GitHub issue, follow the playbook 
 
 ## Loop
 
-Loop Engineering is installed at L1, report-only, unscheduled. See [LOOP.md](LOOP.md). Ticket work is not a loop run.
+Loop Engineering is installed at L1, report-only, unscheduled. See [LOOP.md](LOOP.md). Ticket work is not a loop run: it is started by the owner with `/next-ticket`.
