@@ -1,0 +1,15 @@
+{
+  "name": "box2d-typescript",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Offline Box2D-style 2D rigid-body replay in TypeScript",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "npm run build && node --test \"test/**/*.test.mjs\"",
+    "start": "npm run build && node dist/server/main.js"
+  },
+  "devDependencies": { "typescript": "7.0.2" }
+}

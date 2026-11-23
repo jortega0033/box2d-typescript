@@ -4,7 +4,7 @@ Instructions for coding agents working in this repository. Read this first, then
 
 ## State of the repository
 
-Planning only. There is no application code, no `package.json`, no test and no CI result yet. Everything below that describes a command, a directory or a module is **planned**: it is what the plan and the technical specification call for, and it becomes real only when the named ticket merges. Do not report a planned command as working, and do not claim a check passed unless you ran it.
+Scaffold only. `package.json`, `tsconfig.json`, empty module directories, entry-point stubs and one smoke test per module exist; there is no product behaviour. Everything below marked **planned** is what the plan and the technical specification call for, and it becomes real only when the named ticket merges. Do not report a planned command as working, and do not claim a check passed unless you ran it.
 
 ## Product
 
@@ -32,17 +32,19 @@ The numbers in the fixtures (3 m after 60 ticks, 0.02 m, 0.05 rad, 1 MiB, 128 bo
 - The project has no licence yet (README "Licensing"). Do not add a `LICENSE` file; it is an owner decision.
 - Not pinned by the plan: Node, TypeScript and browser versions. The first ticket records the versions actually used. Do not claim portability beyond them.
 
-## Commands (all planned)
+## Commands
 
-Nothing here runs today. Names are proposals; the ticket that introduces a command may adjust the name and must then update this table in the same pull request. B2-nn are plan IDs; #n are issue numbers.
+Rows marked planned do not run yet. Names are proposals; the ticket that introduces a command may adjust the name and must then update this table in the same pull request. B2-nn are plan IDs; #n are issue numbers.
 
 | Purpose | Command | Introduced by |
 |---|---|---|
-| Setup | `npm ci` (one pinned devDependency, the TypeScript compiler); check `node --version` | planned: introduced by ticket #2 (B2-01) |
-| Build | `npm run build` (`tsc` to `dist/`) | planned: introduced by ticket #2 |
-| Test | `npm test` (build, then `node --test` on the compiled tests) | planned: introduced by ticket #2 |
-| Run the demo | `npm start` (loopback server for `dist/` and `public/`, prints the URL) | planned: introduced by ticket #2 |
-| Headless fixture runner | `node dist/cli/main.js run <scene.json> [--ticks N]` prints canonical trace bytes and a hash | planned: introduced by ticket #2 |
+| Setup | `npm ci` (one pinned devDependency, the TypeScript compiler); check `node --version` | works (scaffold) |
+| Build | `npm run build` (`tsc` to `dist/`) | works (scaffold) |
+| Type-check (lint) | `npm run typecheck` (`tsc --noEmit`, strict; the spec allows no other lint or format tool) | works (scaffold) |
+| Test | `npm test` (build, then `node --test "test/**/*.test.mjs"`) | works (scaffold: smoke tests only) |
+| Run the demo | `npm start` (loopback server for `dist/` and `public/`, prints the URL) | planned: stub exits non-zero; introduced by ticket #12 |
+| CLI help and version | `node dist/cli/main.js --help`, `--version` | works (scaffold) |
+| Headless fixture runner | `node dist/cli/main.js run <scene.json> [--ticks N]` prints canonical trace bytes and a hash | planned: stub exits non-zero; introduced by ticket #11 |
 | Reference compare | `node dist/cli/main.js compare <observed-trace> <reference-trace>` (exit code nonzero on mismatch) | planned: introduced by ticket #7 (B2-06) |
 | Native reference traces | built and run in CI only, on Linux; a trace bundle is checked in | planned: introduced by the reference harness ticket (B2-08, new) |
 
@@ -72,7 +74,7 @@ Capture, in the pull request description, each command you ran and its observed 
 2. Each acceptance criterion mapped to the test, fixture or manual step that proves it. A criterion that needs a person (a keyboard walkthrough in a normal browser) is done as far as an agent can and the rest is listed under "Owner checks"; say which.
 3. Determinism and offline checks the ticket touches: canonical trace bytes equal across two runs on the same runtime, no external request from the demo.
 4. A statement of what was not run or not verified, including any native (Box2D) step that only CI can run.
-5. Review gates, in this order: local checks pass with output recorded; the reviewer inputs are written to `.claude/state/review/`; Code Reviewer reviews the full diff and the recorded output; Reality Checker compares each criterion with the evidence (it does not need a CI result); only then `gh pr create --draft`. CI runs on the draft; fix, re-run the checks and both gates on a red result. Do not poll CI: end the turn with "Draft pull request #N is waiting for CI" and read `gh pr checks` once when woken. Mark it ready only when CI is green, and comment the CI run link on the issue. CI is installed outside the tickets; until ticket #2 adds `package.json`, a guard skips the `npm` steps, and no ticket edits CI.
+5. Review gates, in this order: local checks pass with output recorded; the reviewer inputs are written to `.claude/state/review/`; Code Reviewer reviews the full diff and the recorded output; Reality Checker compares each criterion with the evidence (it does not need a CI result); only then `gh pr create --draft`. CI runs on the draft; fix, re-run the checks and both gates on a red result. Do not poll CI: end the turn with "Draft pull request #N is waiting for CI" and read `gh pr checks` once when woken. Mark it ready only when CI is green, and comment the CI run link on the issue. CI is installed outside the tickets and no ticket edits it.
 
 Never write "done", "passing" or "verified" without the command and its output.
 
@@ -81,7 +83,7 @@ Never write "done", "passing" or "verified" without the command and its output.
 - **Start:** only the owner starts ticket work, with `/next-ticket [issue]` ([`.claude/skills/next-ticket/SKILL.md`](.claude/skills/next-ticket/SKILL.md)). There is no scheduler. Playbook: [`.claude/skills/implement-ticket/SKILL.md`](.claude/skills/implement-ticket/SKILL.md).
 - **Review gate hook:** [`.claude/hooks/role-gate.mjs`](.claude/hooks/role-gate.mjs) blocks `gh pr create` and `gh pr ready` until Code Reviewer and Reality Checker ran after the last code edit. `ROLE_GATE=off` in the environment Claude Code is started from switches it off for that session; only the owner does that.
 - **Permissions:** [`.claude/settings.json`](.claude/settings.json). Documented commands are allowed; force pushes, pushes to `main`, merges, releases and reads of secrets are denied; edits to CI, agent configuration and Loop files ask first.
-- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on Linux and Windows (Node 22) and must be green before a pull request is marked ready. Until ticket #2 adds `package.json`, a guard skips `npm ci` and `npm test`; the guard becomes inactive on its own at that point, and only the owner may later delete the `if:` lines. No ticket changes `.github/`. The native reference workflow [`.github/workflows/reference.yml`](.github/workflows/reference.yml) is already installed and skips itself until ticket B2-08 adds `reference/CMakeLists.txt` and `reference/generate.sh`.
+- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml) runs on Linux and Windows (Node 22) and must be green before a pull request is marked ready. CI runs `npm ci`, `npm run typecheck` and `npm test`. No ticket changes `.github/`. The native reference workflow [`.github/workflows/reference.yml`](.github/workflows/reference.yml) is already installed and skips itself until ticket B2-08 adds `reference/CMakeLists.txt` and `reference/generate.sh`.
 - **Pull requests and tickets:** [pull request template](.github/pull_request_template.md), [ticket template](.github/ISSUE_TEMPLATE/implementation-ticket.md). Labels: `status:ready`, `status:blocked`, `status:in-progress`, `needs-decision`, `tracking`. Big tickets are split into sub-issues of 1 to 4 hours; `/next-ticket` picks leaf tickets only and refuses a `tracking` parent; the pull request of the last open sub-issue closes the sub-issue and its parent. Add a line to [CHANGELOG.md](CHANGELOG.md) in every ticket pull request.
 - **Only the owner merges and releases** ([docs/RELEASING.md](docs/RELEASING.md)). Security reports: [SECURITY.md](SECURITY.md).
 - **UI and writing quality:** [docs/ui-quality.md](docs/ui-quality.md) is binding for every screen; skills `ui-ux-pro-max` (UI work) and `unslop` (copy, docs, pull request text) are installed in `.claude/skills/`.

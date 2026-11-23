@@ -28,13 +28,9 @@ jobs:
           node-version: ${{ matrix.node }}
       - name: Review gate hook self-test
         run: node .claude/hooks/role-gate.mjs --self-test
-      # GUARD: the application does not exist yet. The two steps below are
-      # skipped until `package.json` exists. Ticket #2 (B2-01, walking
-      # skeleton) adds it, and they then run by themselves. No ticket edits
-      # this file; only the owner may later delete the `if:` lines.
       - name: Install (npm ci)
-        if: ${{ hashFiles('package.json') != '' }}
         run: npm ci
+      - name: Type-check
+        run: npm run typecheck
       - name: Test (npm test)
-        if: ${{ hashFiles('package.json') != '' }}
         run: npm test

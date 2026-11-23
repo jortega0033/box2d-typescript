@@ -4,11 +4,11 @@ The full repository instructions are in [CLAUDE.md](CLAUDE.md). This file repeat
 
 ## State
 
-Planning only: no application code and no working commands yet. Commands in `CLAUDE.md` are marked as planned and are introduced by named tickets. Do not report a planned command as working.
+Scaffold only: `npm ci`, `npm run build`, `npm run typecheck` and `npm test` work (smoke tests, no product behaviour). Other commands in `CLAUDE.md` are marked as planned and are introduced by named tickets. Do not report a planned command as working.
 
 ## Test commands
 
-Planned, introduced by ticket #2 (B2-01, the walking skeleton): `npm test`, which builds with the pinned TypeScript compiler and runs `node --test` on the compiled tests. The native Box2D reference step runs in CI only.
+`npm test` builds with the pinned TypeScript compiler, then runs `node --test` on `test/**/*.test.mjs`, which import the compiled `dist/` output. The native Box2D reference step runs in CI only.
 
 ## Loop conventions
 

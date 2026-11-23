@@ -15,12 +15,9 @@ name: reference
 
 on:
   workflow_dispatch:
+  # No path filter: "native traces" is a required check, and GitHub keeps a pull
+  # request blocked while a required check never starts (owner, 2026-11-23).
   pull_request:
-    paths:
-      - 'reference/**'
-      - 'scripts/scene-to-native.mjs'
-      - 'fixtures/scenes/**'
-      - '.github/workflows/reference.yml'
 
 permissions:
   contents: read

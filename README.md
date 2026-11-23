@@ -1,6 +1,6 @@
 # Box2D in TypeScript
 
-A planned offline project. Implementation has not started. The repository currently contains the product plan, technical specification and implementation backlog.
+A planned offline project. Implementation has not started beyond a toolchain scaffold (`npm ci`, `npm test`). The repository currently contains the product plan, technical specification and implementation backlog.
 
 ## Plan
 
