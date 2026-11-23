@@ -1,6 +1,6 @@
 # Implementer map (planned)
 
-Status: planned. Nothing here is implemented. The behaviour is specified in [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md); this file only says where each piece is meant to live and which imports are allowed. Directory names are proposals; the first ticket that creates a directory may adjust it and must update this file and `CLAUDE.md`.
+Status: planned. The directories exist as scaffold (header comment and smoke test only); no behaviour is implemented. The behaviour is specified in [TECHNICAL_SPEC.md](TECHNICAL_SPEC.md); this file only says where each piece is meant to live and which imports are allowed. Directory names are proposals; the first ticket that creates a directory may adjust it and must update this file and `CLAUDE.md`.
 
 ## Modules and allowed imports
 
