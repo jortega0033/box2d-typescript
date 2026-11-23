@@ -8,7 +8,7 @@ Scaffold only: `npm ci`, `npm run build`, `npm run typecheck` and `npm test` wor
 
 ## Test commands
 
-`npm test` builds with the pinned TypeScript compiler and runs `node --test` on the compiled tests. The native Box2D reference step runs in CI only.
+`npm test` builds with the pinned TypeScript compiler, then runs `node --test` on `test/**/*.test.mjs`, which import the compiled `dist/` output. The native Box2D reference step runs in CI only.
 
 ## Loop conventions
 

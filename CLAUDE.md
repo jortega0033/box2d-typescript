@@ -41,7 +41,7 @@ Rows marked planned do not run yet. Names are proposals; the ticket that introdu
 | Setup | `npm ci` (one pinned devDependency, the TypeScript compiler); check `node --version` | works (scaffold) |
 | Build | `npm run build` (`tsc` to `dist/`) | works (scaffold) |
 | Type-check (lint) | `npm run typecheck` (`tsc --noEmit`, strict; the spec allows no other lint or format tool) | works (scaffold) |
-| Test | `npm test` (build, then `node --test "test/*.test.mjs"`) | works (scaffold: smoke tests only) |
+| Test | `npm test` (build, then `node --test "test/**/*.test.mjs"`) | works (scaffold: smoke tests only) |
 | Run the demo | `npm start` (loopback server for `dist/` and `public/`, prints the URL) | planned: stub exits non-zero; introduced by ticket #12 |
 | CLI help and version | `node dist/cli/main.js --help`, `--version` | works (scaffold) |
 | Headless fixture runner | `node dist/cli/main.js run <scene.json> [--ticks N]` prints canonical trace bytes and a hash | planned: stub exits non-zero; introduced by ticket #11 |
