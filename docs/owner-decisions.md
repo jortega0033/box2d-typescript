@@ -41,3 +41,13 @@ Issue numbers: B2-07 and B2-08 are new tickets whose numbers GitHub assigns on c
 - D13 (#6, B2-05): speed control values 0.25x, 0.5x, 1x, 2x, 4x; speed changes only how many ticks play per displayed frame.
 - D14 (#3, B2-02): friction and restitution mixing follow Box2D v3.1.1 (geometric mean for friction, maximum for restitution), checked against the pinned `docs/simulation.md`; deviations are recorded in `docs/engine-contract.md`.
 - D15 (#7, B2-06): a fixture that exceeds a tolerance is kept and reported in `docs/reference-findings.md` with its measured error and a diagnosis; tolerances and slop are not tuned on held-out scenes.
+
+## Program decisions (owner, 2026-11-24)
+
+The owner accepted the goal and each suggestion below. They apply from the phase they name; the rules of `CLAUDE.md` hold for phase 1 as written.
+
+| Decision | Implemented in |
+|---|---|
+| The repository has a program goal above phase 1: a complete physics engine in TypeScript, in six phases. | Program issue #21 |
+| The repository name ties it to one engine. Suggested: keep the name and describe the goal in the README. | Program issue #21 |
+| Reference traces come from the MIT-licensed native engine. Suggested: pin a release and keep its notice. | Program issue #21 |

@@ -1,5 +1,7 @@
 # Box2D in TypeScript
 
+> This document specifies phase 1 of the program in [#21](https://github.com/jortega0033/box2d-typescript/issues/21). Hour figures in it are early estimates for that phase; its open tickets add up to 51 to 73 hours (2026-11-24). Work that it defers is planned in the later phases only where the program names it.
+
 Engineering plan. Prototype, reference fixture generation, and implementation checks are pending. The batch estimates **13–19 engineering hours** across six tickets.
 
 ## Product requirements
